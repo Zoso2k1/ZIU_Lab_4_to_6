@@ -1,0 +1,50 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1565C0;
+    padding: 0.5rem 1rem;
+    color: white;
+  }
+  .logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  .links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  .links li a {
+    color: white;
+    text-decoration: none;
+  }
+  .hamburger {
+    display: none; /* pokażemy go tylko na małych ekranach */
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+  }
+  /* Media query: poniżej np. 768px hamburger, menu w wierszu */
+  @media (max-width: 768px) {
+    .links { 
+      display: none;
+      flex-direction: column;
+      background-color: #1565C0;
+      position: absolute;
+      top: 56px; /* wysokość navbar */
+      right: 0;
+      width: 100%;
+    }
+    .links.open {
+      display: flex;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }

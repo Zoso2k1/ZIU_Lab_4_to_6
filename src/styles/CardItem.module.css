@@ -1,0 +1,19 @@
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .imageWrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .imageWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* zachowuje proporcje obrazka */
+  }
+  .content {
+    padding: 0.5rem;
+  }
+  

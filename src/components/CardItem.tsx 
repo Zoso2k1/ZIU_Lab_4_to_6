@@ -1,0 +1,21 @@
+import React from 'react';
+import styles from './CardItem.module.css';
+
+interface CardItemProps {
+  title: string;
+  image: string;
+}
+
+export default function CardItem({ title, image }: CardItemProps) {
+  return (
+    <div className={styles.card}>
+      <div className={styles.imageWrapper}>
+        <img src={image} alt={title} />
+      </div>
+      <div className={styles.content}>
+        <h3>{title}</h3>
+        <p>Krótki opis karty...</p>
+      </div>
+    </div>
+  );
+}

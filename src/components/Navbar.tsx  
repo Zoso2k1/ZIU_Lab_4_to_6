@@ -1,0 +1,22 @@
+import React, { useState } from 'react';
+import styles from './Navbar.module.css';
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  return (
+    <nav className={styles.navbar}>
+      <div className={styles.logo}>MojaStrona</div>
+      <div className={styles.hamburger} onClick={() => setOpen(o => !o)}>
+        {/* Ikonka hamburgera (może być SVG lub zwykły div) */}
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+      </div>
+      <ul className={`${styles.links} ${open ? styles.open : ''}`}>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#tasks">Zadania</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+    </nav>
+  );
+}
