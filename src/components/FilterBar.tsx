@@ -1,29 +1,26 @@
-import { FilterType } from '/src/assets/types/todo.types';
+import React from 'react';
+import { FilterType } from '../types/todo';
 
 interface FilterBarProps {
   activeFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
 }
 
-export function FilterBar({ activeFilter, onFilterChange }: FilterBarProps) {
-  const filters: { value: FilterType; label: string }[] = [
-    { value: 'all', label: 'Wszystkie' },
-    { value: 'active', label: 'Aktywne' },
-    { value: 'completed', label: 'Ukończone' },
+export default function FilterBar({ activeFilter, onFilterChange }: FilterBarProps) {
+  const filters: { label: string; value: FilterType }[] = [
+    { label: 'Wszystkie', value: 'all' },
+    { label: 'Aktywne',  value: 'active' },
+    { label: 'Ukończone',value: 'completed' }
   ];
-
   return (
-    <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-      {filters.map((f) => (
+    <div style={{ margin: '1rem 0' }}>
+      {filters.map(f => (
         <button
           key={f.value}
           onClick={() => onFilterChange(f.value)}
           style={{
-            fontWeight: activeFilter === f.value ? 'bold' : 'normal',
-            border:
-              activeFilter === f.value ? '2px solid #007bff' : '1px solid #ccc',
-            padding: '5px 10px',
-            cursor: 'pointer',
+            marginRight: '0.5rem',
+            fontWeight: activeFilter === f.value ? 'bold' : 'normal'
           }}
         >
           {f.label}
@@ -32,3 +29,4 @@ export function FilterBar({ activeFilter, onFilterChange }: FilterBarProps) {
     </div>
   );
 }
+

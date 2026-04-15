@@ -1,15 +1,9 @@
+// Interfejs zadania Todo
 export interface Todo {
   id: string;
-  text: string;
+  title: string;
   completed: boolean;
-  createdAt: Date;
 }
 
-export type TodoAction =
-  | { type: 'ADD'; payload: string }
-  | { type: 'TOGGLE'; payload: string }
-  | { type: 'DELETE'; payload: string };
-
-export interface TodoState {
-  todos: Todo[];
-}
+// Typy filtrów
+export type FilterType = 'all' | 'active' | 'completed';

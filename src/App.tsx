@@ -1,52 +1,74 @@
-import { useState } from "react";
-import { useTodoContext } from "./context/TodoContext";
-import AddTodoForm from "./components/AddTodoForm";
-import TodoList from "./components/TodoList";
+import React, { useState, useReducer, useMemo } from 'react';
+import { Todo, FilterType } from './types/todo';
+import TodoInput from './components/TodoInput';
+import TodoList from './components/TodoList';
+import FilterBar from './components/FilterBar';
+import Header from './components/Header';
+import { todoReducer, TodoAction } from './reducers/todoReducer';
+import { ThemeProvider } from './context/ThemeContext';
 
-type FilterType = 'all' | 'active' | 'completed';
+const initialTodos: Todo[] = [
+  { id: '1', title: 'Nauczyć się Reacta', completed: false },
+  { id: '2', title: 'Praktykować TypeScript', completed: true }
+];
 
-function App() {
-  const { state, dispatch } = useTodoContext();
-  const [filter, setFilter] = useState<FilterType>('all');
+export default function App() {
+  // Stan filtru
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
+  // Stan listy zadań - refaktoryzacja do useReducer
+  // Konsola reduxowy styl: używamy dispatch({type, payload})
+  const [state, dispatch] = useReducer(todoReducer, { todos: initialTodos });
+
+  // Dodawanie zadania
   const handleAdd = (text: string) => {
-    dispatch({ type: 'ADD', payload: text });
+    dispatch({ type: 'ADD_TODO', payload: text });
   };
 
+  // Przełączanie ukończony/aktywne
   const handleToggle = (id: string) => {
-    dispatch({ type: 'TOGGLE', payload: id });
+    dispatch({ type: 'TOGGLE_TODO', payload: id });
   };
 
+  // Usuwanie zadania
   const handleDelete = (id: string) => {
-    dispatch({ type: 'DELETE', payload: id });
+    dispatch({ type: 'DELETE_TODO', payload: id });
   };
 
-  // TODO 3: Brakujące przypadki filtru
-  const filteredTodos = state.todos.filter(todo => {
-    if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
-    return true; // 'all'
-  });
+  // Edycja tytułu zadania
+  const handleEdit = (id: string, newTitle: string) => {
+    dispatch({ type: 'EDIT_TODO', payload: { id, title: newTitle } });
+  };
+
+  // Filtrowanie listy zadań na podstawie activeFilter
+  const filteredTodos = useMemo(() => {
+    return state.todos.filter(todo => {
+      if (activeFilter === 'active') return !todo.completed;
+      if (activeFilter === 'completed') return todo.completed;
+      return true;
+    });
+  }, [state.todos, activeFilter]);
 
   return (
-    <div style={{ maxWidth: '500px', margin: '40px auto', fontFamily: 'sans-serif' }}>
-      <h1>Lista Zadań (Lab 4)</h1>
-      
-      <AddTodoForm onAdd={handleAdd} />
+    <ThemeProvider>
+    <div>
+      {/* Nagłówek z licznikiem */}
+      <Header activeCount={state.todos.filter(t => !t.completed).length} totalCount={state.todos.length} />
 
-      <div style={{ marginBottom: '20px' }}>
-        <button onClick={() => setFilter('all')} disabled={filter === 'all'}>Wszystkie</button>
-        <button onClick={() => setFilter('active')} disabled={filter === 'active'}>Aktywne</button>
-        <button onClick={() => setFilter('completed')} disabled={filter === 'completed'}>Ukończone</button>
-      </div>
+      {/* Formularz dodawania */}
+      <TodoInput onAdd={handleAdd} />
 
+      {/* Pasek filtrów */}
+      <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+
+      {/* Lista zadań */}
       <TodoList 
         todos={filteredTodos} 
         onToggle={handleToggle} 
-        onDelete={handleDelete} 
+        onDelete={handleDelete}
+        onEdit={handleEdit}
       />
     </div>
+    </ThemeProvider>
   );
 }
-
-export default App;
