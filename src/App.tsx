@@ -7,6 +7,9 @@ import Header from './components/Header';
 import { todoReducer, TodoAction } from './reducers/todoReducer';
 import { ThemeProvider } from './context/ThemeContext';
 
+// 1. IMPORTUJEMY FORMULARZ Z LAB 7
+import MultiStepForm from './components/forms/MultiStepForm';
+
 const initialTodos: Todo[] = [
   { id: '1', title: 'Nauczyć się Reacta', completed: false },
   { id: '2', title: 'Praktykować TypeScript', completed: true }
@@ -51,24 +54,37 @@ export default function App() {
 
   return (
     <ThemeProvider>
-    <div>
-      {/* Nagłówek z licznikiem */}
-      <Header activeCount={state.todos.filter(t => !t.completed).length} totalCount={state.todos.length} />
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+        
+        {/* --- CZĘŚĆ 1: APLIKACJA TODO (Lab 4-6) --- */}
+        <section>
+          {/* Nagłówek z licznikiem */}
+          <Header activeCount={state.todos.filter(t => !t.completed).length} totalCount={state.todos.length} />
 
-      {/* Formularz dodawania */}
-      <TodoInput onAdd={handleAdd} />
+          {/* Formularz dodawania */}
+          <TodoInput onAdd={handleAdd} />
 
-      {/* Pasek filtrów */}
-      <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+          {/* Pasek filtrów */}
+          <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
-      {/* Lista zadań */}
-      <TodoList 
-        todos={filteredTodos} 
-        onToggle={handleToggle} 
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-      />
-    </div>
+          {/* Lista zadań */}
+          <TodoList 
+            todos={filteredTodos} 
+            onToggle={handleToggle} 
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
+        </section>
+
+        {/* Linia oddzielająca projekty */}
+        <hr style={{ margin: '60px 0', border: 'none', borderTop: '2px dashed #ccc' }} />
+
+        {/* --- CZĘŚĆ 2: FORMULARZ REJESTRACJI (Lab 7) --- */}
+        <section>
+          <MultiStepForm />
+        </section>
+
+      </div>
     </ThemeProvider>
   );
 }
