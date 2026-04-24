@@ -54,36 +54,45 @@ export default function App() {
 
   return (
     <ThemeProvider>
+      {/* 1. Skip Navigation Link - wymóg Lab 8 */}
+      <a href="#main-content" className="skip-link">
+        Skocz do treści głównej
+      </a>
+
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-        
-        {/* --- CZĘŚĆ 1: APLIKACJA TODO (Lab 4-6) --- */}
-        <section>
-          {/* Nagłówek z licznikiem */}
-          <Header activeCount={state.todos.filter(t => !t.completed).length} totalCount={state.todos.length} />
-
-          {/* Formularz dodawania */}
-          <TodoInput onAdd={handleAdd} />
-
-          {/* Pasek filtrów */}
-          <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-
-          {/* Lista zadań */}
-          <TodoList 
-            todos={filteredTodos} 
-            onToggle={handleToggle} 
-            onDelete={handleDelete}
-            onEdit={handleEdit}
+        <header role="banner">
+          <Header 
+            activeCount={state.todos.filter(t => !t.completed).length} 
+            totalCount={state.todos.length} 
           />
-        </section>
+        </header>
 
-        {/* Linia oddzielająca projekty */}
-        <hr style={{ margin: '60px 0', border: 'none', borderTop: '2px dashed #ccc' }} />
+        {/* 2. Główny punkt wejścia dla czytnika ekranu */}
+        <main id="main-content" tabIndex={-1} role="main">
+          
+          <section aria-labelledby="todo-section-title">
+            <h2 id="todo-section-title" className="sr-only">Lista zadań</h2>
+            <TodoInput onAdd={handleAdd} />
+            <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+            <TodoList 
+              todos={filteredTodos} 
+              onToggle={handleToggle} 
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          </section>
 
-        {/* --- CZĘŚĆ 2: FORMULARZ REJESTRACJI (Lab 7) --- */}
-        <section>
-          <MultiStepForm />
-        </section>
+          <hr style={{ margin: '60px 0', border: 'none', borderTop: '2px dashed #ccc' }} />
 
+          <section aria-labelledby="form-section-title">
+            <h2 id="form-section-title" className="sr-only">Formularz rejestracji</h2>
+            <MultiStepForm />
+          </section>
+        </main>
+
+        <footer style={{ marginTop: '40px', textAlign: 'center', fontSize: '0.8rem' }}>
+          <p>&copy; 2026 TodoApp - Projekt Lab ZIU</p>
+        </footer>
       </div>
     </ThemeProvider>
   );

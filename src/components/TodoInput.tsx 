@@ -1,32 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-interface TodoInputProps {
-  onAdd: (text: string) => void;
-}
-
-export default function TodoInput({ onAdd }: TodoInputProps) {
+export default function TodoInput({ onAdd }: { onAdd: (text: string) => void }) {
   const [text, setText] = useState('');
+  const [statusMsg, setStatusMsg] = useState(''); // Stan dla Live Region
 
-  const handleSubmit = () => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    onAdd(trimmed);
-    setText('');
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (text.trim()) {
+      onAdd(text);
+      setStatusMsg(`Dodano zadanie: ${text}`); // Ustawienie komunikatu
+      setText('');
+      // Wyczyść komunikat po chwili, by móc go ogłosić ponownie
+      setTimeout(() => setStatusMsg(''), 3000);
+    }
   };
 
   return (
-    <div style={{ margin: '1rem 0' }}>
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="todo-input">Nowe zadanie:</label>
       <input
+        id="todo-input"
         type="text"
-        placeholder="Nowe zadanie..."
         value={text}
-        onChange={e => setText(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-        style={{ padding: '0.5rem', width: '70%' }}
+        onChange={(e) => setText(e.target.value)}
+        aria-describedby="todo-hint"
       />
-      <button onClick={handleSubmit} style={{ padding: '0.5rem', marginLeft: '0.5rem' }}>
-        Dodaj
-      </button>
-    </div>
+      <button type="submit" aria-label="Dodaj zadanie do listy">Dodaj</button>
+      <p id="todo-hint" className="sr-only">Wpisz treść zadania i naciśnij Enter</p>
+
+      {/* 3. ARIA LIVE REGION - ogłasza zmiany dynamicznie */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {statusMsg}
+      </div>
+    </form>
   );
 }

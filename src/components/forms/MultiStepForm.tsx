@@ -48,48 +48,27 @@ export default function MultiStepForm() {
   };
 
   return (
-    <main aria-label="Formularz rejestracji"> [cite: 916]
-      <nav aria-label="Postęp rejestracji" style={{ marginBottom: '1rem' }}> [cite: 917]
-        <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem', padding: 0 }}>
-          <li aria-current={currentStep === 1 ? 'step' : undefined}>1. Dane</li> [cite: 896, 918]
-          <li aria-current={currentStep === 2 ? 'step' : undefined}>2. Preferencje</li>
-          <li aria-current={currentStep === 3 ? 'step' : undefined}>3. Podsumowanie</li>
-        </ul>
+    <main aria-label="Formularz rejestracji">
+      {/* Pasek postępu ARIA */}
+      <div 
+        role="progressbar" 
+        aria-valuemin={1} 
+        aria-valuemax={3} 
+        aria-valuenow={currentStep}
+        aria-label={`Krok ${currentStep} z 3`}
+        style={{ height: '10px', background: '#eee', marginBottom: '20px' }}
+      >
+        <div style={{ width: `${(currentStep / 3) * 100}%`, background: 'blue', height: '100%' }} />
+      </div>
+  
+      <nav aria-label="Menu kroków">
+         {/* ... tutaj Twoja lista kroków ... */}
       </nav>
       
-      <h2 tabIndex={-1} ref={headingRef} style={{ outline: 'none' }}> [cite: 920]
+      <h2 tabIndex={-1} ref={headingRef}>
         {getStepTitle()} 
       </h2>
-      
-      {globalError && (
-        <div role="alert" style={{ backgroundColor: '#ffebee', padding: '1rem', marginBottom: '1rem' }}>
-          {globalError}
-        </div>
-      )}
-
-      {currentStep === 1 && (
-        <Step1 
-          onComplete={handleStep1Complete} 
-          defaultValues={formData.step1} // Zapobieganie utracie danych [cite: 955]
-        />
-      )}
-      
-      {currentStep === 2 && (
-        <Step2 
-          onComplete={handleStep2Complete} 
-          onBack={() => setCurrentStep(1)}
-          defaultValues={formData.step2} 
-        />
-      )}
-      
-      {currentStep === 3 && (
-        <Step3 
-          data={formData} 
-          onBack={() => setCurrentStep(2)}
-          onSuccess={() => alert('Zarejestrowano pomyślnie!')}
-          onServerError={handleServerError}
-        />
-      )}
+      {/* ... reszta kodu ... */}
     </main>
   );
 }
